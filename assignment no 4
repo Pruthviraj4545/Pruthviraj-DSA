@@ -1,0 +1,261 @@
+#include<iostream>
+using namespace std;
+
+class node
+{
+public:
+	string data;
+	node* next;
+	node* prev;
+
+	node()
+	{
+		data = "x";
+		next = NULL;
+		prev = NULL;
+	}
+
+	node(string d)
+	{
+		data = d;
+		next = NULL;
+		prev = NULL;
+	}
+};
+
+class doublylinklist
+{
+	node* head;
+
+public:
+	doublylinklist()
+	{
+		head = NULL;
+	}
+
+	void insert_start(string d)
+	{
+		node* nn = new node(d);
+		if (head != NULL) {
+			nn->next = head;
+			head->prev = nn;
+		}
+		head = nn;
+	}
+
+	void insert_end(string d)
+	{
+		node*nn=new node(d);
+		if (head == NULL)
+		{
+			head = nn;
+		}
+		else
+		{
+			node* temp = head;
+			while (temp->next != NULL)
+			{
+				temp = temp->next;
+			}
+			temp->next = nn;
+			nn->prev = temp;
+		}
+
+	}
+	void insert_betwn(string d)
+	{
+		node* nn = new node(d);
+
+		if (head == NULL)
+		{
+			head = nn;
+			return;
+		}
+
+		string key;
+		cout << "Enter the key to insert between: ";
+		cin >> key;
+
+		node* temp = head;
+
+		while (temp != NULL)
+		{
+			if (temp->data == key)
+			{
+				nn->prev = temp;
+				nn->next = temp->next;
+				temp->next->prev = nn;
+				temp->next = nn;
+
+			}
+			temp = temp->next;
+		}
+
+
+	}
+	void display()
+	{
+		node* temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->data << " ";
+			temp = temp->next;
+		}
+		cout << endl;
+	}
+
+	void delete_start ()
+	{
+		if(head!= NULL)
+		{
+			head=head->next;
+			head->prev = NULL;
+		}
+		else
+		{
+			cout<<"list is empty"<<endl;
+		}
+	}
+	void delete_end()
+	{
+		if (head == NULL)
+		{
+			cout << "List is empty" << endl;
+		}
+		else
+		{
+			node* temp = head;
+			while (temp->next != NULL)
+			{
+				temp = temp->next;
+			}
+			temp->prev->next = NULL;
+		}
+	}
+	void delete_btw(string data3)
+	{
+		node* temp = head;
+		while (temp != NULL)
+		{
+			if (temp->data == data3)
+			{
+				if (temp->prev != NULL)
+					temp->prev->next = temp->next;
+				else
+					head = temp->next;
+				if (temp->next != NULL)
+					temp->next->prev = temp->prev;
+			}
+			temp = temp->next;
+		}
+	}
+	void reverse_print()
+	{
+		node* temp = head;
+		while (temp->next != NULL)
+		{
+			temp=temp->next;
+		}
+		cout<<temp->data<<endl;
+
+		while(temp->prev!=NULL)
+		{
+			temp=temp->prev;
+			cout<<temp->data<<endl;
+		}
+	}
+};
+
+
+
+int main()
+{
+	doublylinklist ll;
+	int choice;
+	string data;
+	do
+	{
+		cout << "Doubly Linked List Operations" << endl;
+		cout << "1. Insert" << endl;
+		cout << "2. Delete" << endl;
+		cout << "3. Display" << endl;
+		cout << "4. print in reverse manner" << endl;
+		cout<< "5. Exit.."<<endl;
+		cout << "Enter your choice: ";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			cout << "Insert Options:" << endl;
+			cout << "1. Insert at start" << endl;
+			cout << "2. Insert at end" << endl;
+			cout << "3. Insert between" << endl;
+			cout << "Enter your choice: ";
+			int insert_choice;
+			cin >> insert_choice;
+			switch (insert_choice)
+			{
+			case 1:
+				cout << "Enter the data to insert: ";
+				cin >> data;
+				ll.insert_start(data);
+				break;
+			case 2:
+				cout << "Enter the data to insert: ";
+				cin >> data;
+				ll.insert_end(data);
+				break;
+			case 3:
+				cout << "Enter the data to insert: ";
+				cin >> data;
+				ll.insert_betwn(data);
+				break;
+			default:
+				cout << "Invalid choice. Please try again." << endl;
+			}
+			break;
+		case 2:
+			cout << "DELETE Options:" << endl;
+			cout << "1. DELETE at start" << endl;
+			cout << "2. DELETE at end" << endl;
+			cout << "3. DELETE between" << endl;
+			cout << "Enter your choice: ";
+			int delete_choice;
+			cin>>delete_choice;
+			switch (delete_choice)
+			{
+			case 1:
+				ll.delete_start();
+				break;
+
+			case 2:
+
+				ll.delete_end();
+				break;
+
+			case 3:
+				string data3;
+				cout<<"enter tha data to delete"<< endl;
+				cin>> data3;
+				ll.delete_btw(data3);
+				break;
+			}
+			break;
+		case 3:
+			ll.display();
+			break;
+
+		case 4:
+			ll.reverse_print();
+			break;
+		case 5:
+			cout << "Exiting..." << endl;
+			break;
+		default:
+			cout << "Invalid choice. Please try again." << endl;
+		}
+	} while (choice != 5);
+
+
+	return 0;
+}
